@@ -231,6 +231,87 @@ function carregarClientes() {
 }
 
 /* ───────────────────────────────────────────────────────
+   BLOCO 7 — IDENTIFICAÇÃO DO OPERADOR (SessionStorage)
+
+   SessionStorage funciona como LocalStorage, mas é apagado
+   automaticamente quando a aba ou o navegador é fechado.
+   Ideal para dados de sessão como o nome do operador logado.
+─────────────────────────────────────────────────────── */
+function inicializarOperador() {
+  // Tenta recuperar o nome já salvo nesta sessão
+  let nomeOperador = sessionStorage.getItem('operador_nome');
+
+  if (!nomeOperador) {
+    // Primeira visita da sessão: pergunta o nome ao usuário
+    const digitado = prompt('Bem-vindo(a)! Digite seu nome para identificação:');
+
+    // Se o usuário cancelar ou deixar em branco, usa "Visitante"
+    nomeOperador = (digitado && digitado.trim() !== '')
+      ? digitado.trim()
+      : 'Visitante';
+
+    // Salva no SessionStorage — some quando a aba fechar
+    sessionStorage.setItem('operador_nome', nomeOperador);
+  }
+
+  // Exibe o nome na barra do header
+  document.getElementById('operador-nome').textContent = nomeOperador;
+}
+
+/* ───────────────────────────────────────────────────────
+   BLOCO 8 — FILTRO DE BUSCA EM TEMPO REAL
+
+   Lê o texto digitado no campo #filtro-busca e oculta/exibe
+   cada card conforme o conteúdo bater com nome, e-mail ou plano.
+   Não remove do DOM — apenas altera o display via CSS class,
+   para não interferir com os dados reais do LocalStorage.
+─────────────────────────────────────────────────────── */
+function filtrarClientes() {
+  // Termo de busca: converte para minúsculo para comparação sem case
+  const termo = document.getElementById('filtro-busca').value.trim().toLowerCase();
+
+  // Seleciona todos os cards já renderizados na lista
+  const cards = document.querySelectorAll('.card-cliente');
+
+  let visiveis = 0;
+
+  cards.forEach(card => {
+    // Extrai o texto do card inteiro (nome + email + plano + endereço)
+    const textoCard = card.textContent.toLowerCase();
+
+    if (textoCard.includes(termo)) {
+      // Bate com o filtro: garante que está visível
+      card.style.display = '';
+      visiveis++;
+    } else {
+      // Não bate: esconde o card
+      card.style.display = 'none';
+    }
+  });
+
+  // Atualiza o contador mostrando quantos estão visíveis
+  document.getElementById('counter').innerHTML =
+    `<strong>${visiveis}</strong> cliente(s) encontrado(s)`;
+
+  // Mostra o "estado vazio" se nenhum card bater com o filtro
+  const lista       = document.getElementById('lista-clientes');
+  const jaTemVazio  = lista.querySelector('.filtro-vazio');
+
+  if (visiveis === 0 && cards.length > 0) {
+    // Há clientes cadastrados, mas nenhum bate com o filtro
+    if (!jaTemVazio) {
+      const aviso = document.createElement('div');
+      aviso.className = 'empty-state filtro-vazio';
+      aviso.innerHTML = `<div class="icon">🔎</div><p>Nenhum cliente encontrado para "<strong>${termo}</strong>".</p>`;
+      lista.appendChild(aviso);
+    }
+  } else if (jaTemVazio) {
+    // Filtro foi limpo ou voltou a ter resultados: remove o aviso
+    jaTemVazio.remove();
+  }
+}
+
+/* ───────────────────────────────────────────────────────
    UTILITÁRIOS
 ─────────────────────────────────────────────────────── */
 function atualizarContador() {
@@ -267,6 +348,9 @@ document.getElementById('cep').addEventListener('input', function () {
 document.getElementById('btn-salvar').addEventListener('click', salvarCliente);
 
 /* ───────────────────────────────────────────────────────
-   INICIALIZAÇÃO — reconstrói cards ao carregar a página
+   INICIALIZAÇÃO
+   Ordem importa: operador primeiro (exige DOM pronto),
+   depois carrega os cards do LocalStorage.
 ─────────────────────────────────────────────────────── */
-carregarClientes();
+inicializarOperador(); // → SessionStorage (pergunta o nome)
+carregarClientes();    // → LocalStorage   (reconstrói os cards)

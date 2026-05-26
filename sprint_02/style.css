@@ -321,3 +321,49 @@ input:read-only {
 }
 
 .counter strong { color: var(--accent); }
+
+/* ───────────────────────────────────────────────────────
+   BARRA DO OPERADOR (SessionStorage)
+
+   Exibida no header logo abaixo do subtítulo.
+   Usa display inline-flex para centralizar o conteúdo
+   e uma borda sutil para se destacar sem poluir.
+─────────────────────────────────────────────────────── */
+.operador-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  padding: 5px 14px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.5px;
+}
+
+/* O nome do operador em destaque com a cor de acento */
+.operador-bar strong {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* ───────────────────────────────────────────────────────
+   CAMPO DE FILTRO DE BUSCA
+
+   Posicionado acima da lista de clientes.
+   Margem inferior separa do contador.
+─────────────────────────────────────────────────────── */
+.filtro-group {
+  margin-bottom: 16px;
+}
+
+/* O input do filtro herda os estilos gerais de input,
+   mas ganha um ícone de lupa via padding-left extra */
+#filtro-busca {
+  padding-left: 36px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: 12px center;
+}

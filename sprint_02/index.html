@@ -13,6 +13,15 @@
   <div class="badge">Sprint 02</div>
   <h1>Cadastro de <span>Clientes</span></h1>
   <p>Integração ViaCEP · Async/Await · LocalStorage</p>
+
+  <!--
+    BARRA DO OPERADOR — SessionStorage
+    O span #operador-nome é preenchido pelo JS ao carregar a página.
+    Se a aba for fechada, o sessionStorage é apagado automaticamente.
+  -->
+  <div class="operador-bar" id="operador-bar">
+    Operador(a) atual: <strong id="operador-nome">—</strong>
+  </div>
 </header>
 
 <div class="layout">
@@ -85,6 +94,21 @@
   <!-- ── LISTA ──────────────────────────────── -->
   <section class="panel">
     <div class="panel-title">Clientes Cadastrados</div>
+
+    <!--
+      FILTRO DE BUSCA — oninput dispara filtrarClientes() no JS.
+      Reage a cada tecla: sem necessidade de botão de pesquisa.
+    -->
+    <div class="form-group filtro-group">
+      <label for="filtro-busca">Buscar cliente</label>
+      <input
+        type="text"
+        id="filtro-busca"
+        placeholder="Nome, e-mail ou plano..."
+        oninput="filtrarClientes()"
+      />
+    </div>
+
     <div class="counter" id="counter">
       <strong>0</strong> cliente(s) registrado(s)
     </div>
