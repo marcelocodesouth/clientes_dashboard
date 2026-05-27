@@ -1,1 +1,94 @@
-teste
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Gestão de Clientes – Dashboard</title>
+  <!-- Vincula o arquivo de estilos externo -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="dashboard">
+  <!-- Cabeçalho com operador da sessão -->
+  <div class="barra-superior">
+    <div class="titulo">
+      <h1>📋 Gestão de Clientes · Dashboard</h1>
+    </div>
+    <div class="cartao-operador">
+      <span>👤 Operador(a):</span>
+      <!-- Nome clicável para troca de operador -->
+      <span id="nomeOperador" title="Clique para trocar de operador">---</span>
+    </div>
+  </div>
+
+  <div class="grade-painel">
+    <!-- Painel esquerdo: formulário de cadastro -->
+    <div class="cartao-formulario">
+      <h2>➕ Novo Cliente</h2>
+      <form id="formularioCliente">
+        <!-- Campos obrigatórios: nome, email, plano (Sprint 1) -->
+        <div class="campo">
+          <label>Nome completo *</label>
+          <input type="text" id="campoNome" placeholder="Ex: Ana Maria Souza" required>
+        </div>
+        <div class="campo">
+          <label>E-mail *</label>
+          <input type="email" id="campoEmail" placeholder="cliente@exemplo.com" required>
+          <!-- Validação visual: e-mail inválido fica vermelho ao perder o foco (Sprint 1) -->
+        </div>
+        <div class="campo">
+          <label>Plano *</label>
+          <select id="campoPlano">
+            <option value="Gold">✨ Gold</option>
+            <option value="Silver">⚪ Silver</option>
+            <option value="Bronze">🟤 Bronze</option>
+          </select>
+        </div>
+        <!-- Sprint 2: campos de endereço integrados à API ViaCEP -->
+        <div class="campo">
+          <label>CEP *</label>
+          <input type="text" id="campoCep" placeholder="01001-000" maxlength="9" required>
+          <small class="dica">Endereço preenchido automaticamente ao digitar</small>
+        </div>
+        <!-- Feedback visual da consulta de CEP (Sprint 2) -->
+        <div id="feedbackCep" class="feedback-cep" style="display: none;"></div>
+        
+        <div class="grade-endereco">
+          <div class="campo"><label>Logradouro</label><input type="text" id="campoLogradouro" placeholder="Automático" readonly></div>
+          <div class="campo"><label>Bairro</label><input type="text" id="campoBairro" placeholder="Automático" readonly></div>
+        </div>
+        <div class="grade-endereco">
+          <div class="campo"><label>Cidade</label><input type="text" id="campoCidade" placeholder="Automático" readonly></div>
+          <div class="campo"><label>Estado/UF</label><input type="text" id="campoUf" placeholder="Automático" readonly></div>
+        </div>
+        <div class="grade-endereco">
+          <div class="campo"><label>Número</label><input type="text" id="campoNumero" placeholder="Nº" required></div>
+          <div class="campo"><label>Complemento</label><input type="text" id="campoComplemento" placeholder="Apto, Bloco etc."></div>
+        </div>
+        <!-- Botão com feedback de salvamento (Sprint 2) -->
+        <button type="submit" class="botao-salvar" id="botaoSalvar">💾 Salvar Cliente</button>
+        <div id="feedbackSalvamento" class="feedback-salvamento" style="display: none;"></div>
+      </form>
+    </div>
+
+    <!-- Painel direito: busca e cards dinâmicos -->
+    <div class="painel-direito">
+      <div class="cartao-filtro">
+        <h2>🔍 Buscar cliente</h2>
+        <input type="text" id="campoBusca" placeholder="Nome, e-mail, cidade ou plano..." autocomplete="off">
+      </div>
+      <div class="cartao-lista">
+        <h2>📇 Clientes cadastrados</h2>
+        <!-- Container onde os cards são injetados via JavaScript (Sprint 1) -->
+        <div id="containerCards" class="container-cards">
+          <div class="mensagem-vazio">Nenhum cliente cadastrado</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Script externo -->
+<script src="script.js"></script>
+</body>
+</html>
